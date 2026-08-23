@@ -2,9 +2,10 @@
 <html lang="gu">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#0b4f8a">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b6f75">
 <link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg">
 <title>KALP TOURS & TRAVELS</title>
 <link rel="stylesheet" href="style.css">
 </head>
@@ -17,50 +18,57 @@
 </header>
 
 <nav>
-  <a href="#home">હોમ</a><a href="#packages">પેકેજ</a><a href="#register">રજીસ્ટ્રેશન</a><a href="#contact">સંપર્ક</a>
+  <a href="#home">હોમ</a>
+  <a href="#packages">પેકેજ</a>
+  <a href="#admin">મેનેજ</a>
+  <a href="#contact">સંપર્ક</a>
 </nav>
 
 <main id="home">
 <section class="intro">
-<h2>અમારી વિશેષતા</h2>
-<div class="grid">
-<div class="card">🚌<h3>સંપૂર્ણ આયોજન</h3><p>મુસાફરી, રહેવા અને સાઇટસીઇંગનું આયોજન.</p></div>
-<div class="card">🎓<h3>શૈક્ષણિક પ્રવાસ</h3><p>પ્રાથમિક શાળાના બાળકો માટે ખાસ આયોજન.</p></div>
-<div class="card">💬<h3>ઝડપી સંપર્ક</h3><p>WhatsApp અને Call દ્વારા સીધો સંપર્ક.</p></div>
-</div>
+  <h2>અમારા પ્રવાસ પેકેજ</h2>
+  <p>તમારી જરૂરિયાત મુજબ પેકેજ પસંદ કરો અને WhatsApp પર સીધી પૂછપરછ કરો.</p>
 </section>
 
-<section id="packages">
-<h2>પ્રવાસ પેકેજ</h2>
-<div class="grid">
-<article class="tour"><h3>🇮🇳 દિલ્હી પ્રવાસ</h3><p>સંસદ ભવન, રાષ્ટ્રપતિ ભવન, અક્ષરધામ, લાલ કિલ્લો, રાજઘાટ, લોટસ ટેમ્પલ, કુતુબમિનાર વગેરે.</p><a class="btn small" href="#register">બુકિંગ પૂછપરછ</a></article>
-<article class="tour"><h3>🏖️ ગોવા પ્રવાસ</h3><p>ક્રૂઝ, નોર્થ ગોવા, સાઉથ ગોવા અને લોકલ સાઇટસીઇંગ.</p><a class="btn small" href="#register">બુકિંગ પૂછપરછ</a></article>
-<article class="tour"><h3>🇳🇵 નેપાળ પ્રવાસ</h3><p>કાઠમંડુ, પોખરા, લુંબીની, પશુપતિનાથ અને પસંદગીના સ્થળો.</p><a class="btn small" href="#register">બુકિંગ પૂછપરછ</a></article>
-<article class="tour"><h3>🛕 અયોધ્યા–પ્રયાગરાજ–વારાણસી</h3><p>રામ મંદિર, પ્રયાગરાજ અને વારાણસીના મુખ્ય ધાર્મિક તથા ઐતિહાસિક સ્થળો.</p><a class="btn small" href="#register">બુકિંગ પૂછપરછ</a></article>
-</div>
+<section id="packages" class="section">
+  <div class="section-head">
+    <h2>📦 પેકેજ</h2>
+    <button class="small-btn" onclick="openForm()">＋ નવું પેકેજ</button>
+  </div>
+  <div id="packageList" class="grid"></div>
 </section>
 
-<section id="register">
-<h2>ઓનલાઇન રજીસ્ટ્રેશન / પૂછપરછ</h2>
-<form onsubmit="sendWhatsApp(event)">
-<input id="name" required placeholder="નામ">
-<input id="school" placeholder="શાળા / સંસ્થા">
-<input id="phone" required type="tel" placeholder="મોબાઇલ નંબર">
-<select id="tour"><option>દિલ્હી પ્રવાસ</option><option>ગોવા પ્રવાસ</option><option>નેપાળ પ્રવાસ</option><option>અયોધ્યા–પ્રયાગરાજ–વારાણસી</option></select>
-<textarea id="message" placeholder="વિશેષ માહિતી"></textarea>
-<button class="btn" type="submit">WhatsApp પર મોકલો</button>
-</form>
+<section id="admin" class="section admin">
+  <h2>⚙️ પેકેજ મેનેજમેન્ટ</h2>
+  <p>અહીંથી તમે તમારા મોબાઇલમાં પેકેજ ઉમેરો, ફેરફાર કરો અથવા કાઢી શકો છો.</p>
+  <div class="notice">નોંધ: પેકેજો આ બ્રાઉઝરના ડિવાઇસમાં સાચવાશે. બીજા મોબાઇલમાં આપમેળે દેખાશે નહીં.</div>
+  <button class="btn" onclick="openForm()">＋ નવું પેકેજ ઉમેરો</button>
+  <button class="outline" onclick="resetPackages()">મૂળ પેકેજ પર પાછા જાઓ</button>
 </section>
 
-<section id="contact" class="contact">
-<h2>સંપર્ક કરો</h2>
-<p>તમારો WhatsApp નંબર અહીં બદલો.</p>
-<a class="btn" href="https://wa.me/918980983123" target="_blank">💬 WhatsApp</a>
-<a class="btn outline" href="tel:+918980983123">📞 Call Now</a>
+<section id="contact" class="contact section">
+  <h2>📞 સંપર્ક</h2>
+  <p><b>KALP TOURS & TRAVELS</b></p>
+  <a class="btn" href="tel:+918980983123">📞 8980983123</a>
+  <a class="wa" href="https://wa.me/918980983123" target="_blank">💬 WhatsApp કરો</a>
 </section>
 </main>
 
-<footer>© 2026 KALP TOURS & TRAVELS</footer>
+<div id="modal" class="modal hidden">
+  <div class="modal-card">
+    <button class="close" onclick="closeForm()">×</button>
+    <h2 id="formTitle">નવું પેકેજ</h2>
+    <form id="packageForm" onsubmit="savePackage(event)">
+      <input type="hidden" id="editId">
+      <label>પેકેજનું નામ<input id="name" required placeholder="જેમ કે નેપાળ પ્રવાસ"></label>
+      <label>દિવસ / રાત્રિ<input id="days" placeholder="4 દિવસ / 3 રાત્રિ"></label>
+      <label>કિંમત (₹)<input id="price" inputmode="numeric" placeholder="7999"></label>
+      <label>સ્થળો / ખાસિયતો<textarea id="places" rows="4" placeholder="કાઠમંડુ, પોખરા, લુંબીની..."></textarea></label>
+      <label>વધુ માહિતી<textarea id="details" rows="3" placeholder="બસ/ટ્રેન, હોટેલ, ભોજન વગેરે"></textarea></label>
+      <button class="btn full" type="submit">💾 સાચવો</button>
+    </form>
+  </div>
+</div>
 <script src="app.js"></script>
 </body>
 </html>
