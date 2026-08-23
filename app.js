@@ -8,3 +8,6 @@ function sendWhatsApp(e){
  const text=`KALP TOURS & TRAVELS\nનામ: ${n}\nશાળા: ${s}\nમોબાઇલ: ${p}\nપ્રવાસ: ${t}\nમાહિતી: ${m}`;
  window.open('https://wa.me/918980983123?text='+encodeURIComponent(text),'_blank');
 }
+if ('serviceWorker' in navigator) {
+ window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));
+}

@@ -1,4 +1,10 @@
 const CACHE='kalp-tours-v1';
-const ASSETS=['./','./index.html','./style.css','./app.js','./manifest.json'];
-self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS))));
-self.addEventListener('fetch',e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request))));
+const ASSETS=['./','./index.html','./style.css','./app.js','./manifest.json','./icon.svg'];
+self.addEventListener('install',event=>{
+ event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)));
+ self.skipWaiting();
+});
+self.addEventListener('activate',event=>event.waitUntil(self.clients.claim()));
+self.addEventListener('fetch',event=>{
+ event.respondWith(caches.match(event.request).then(r=>r||fetch(event.request)));
+});
