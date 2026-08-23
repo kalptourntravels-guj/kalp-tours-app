@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="gu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b4f8a">
+<link rel="manifest" href="manifest.json">
+<title>KALP TOURS & TRAVELS</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="hero">
+  <div class="brand">KALP TOURS & TRAVELS</div>
+  <h1>પ્રવાસ • અનુભવ • શિક્ષણ</h1>
+  <p>શાળા અને પરિવાર માટે ખાસ પ્રવાસ આયોજન</p>
+  <a class="btn" href="#packages">પ્રવાસ પેકેજ જુઓ</a>
+</header>
+
+<nav>
+  <a href="#home">હોમ</a><a href="#packages">પેકેજ</a><a href="#register">રજીસ્ટ્રેશન</a><a href="#contact">સંપર્ક</a>
+</nav>
+
+<main id="home">
+<section class="intro">
+<h2>અમારી વિશેષતા</h2>
+<div class="grid">
+<div class="card">🚌<h3>સંપૂર્ણ આયોજન</h3><p>મુસાફરી, રહેવા અને સાઇટસીઇંગનું આયોજન.</p></div>
+<div class="card">🎓<h3>શૈક્ષણિક પ્રવાસ</h3><p>પ્રાથમિક શાળાના બાળકો માટે ખાસ આયોજન.</p></div>
+<div class="card">💬<h3>ઝડપી સંપર્ક</h3><p>WhatsApp અને Call દ્વારા સીધો સંપર્ક.</p></div>
+</div>
+</section>
+
+<section id="packages">
+<h2>પ્રવાસ પેકેજ</h2>
+<div class="grid">
+<article class="tour"><h3>🇮🇳 દિલ્હી પ્રવાસ</h3><p>સંસદ ભવન, રાષ્ટ્રપતિ ભવન, અક્ષરધામ, લાલ કિલ્લો, રાજઘાટ, લોટસ ટેમ્પલ, કુતુબમિનાર વગેરે.</p><a class="btn small" href="#register">બુકિંગ પૂછપરછ</a></article>
+<article class="tour"><h3>🏖️ ગોવા પ્રવાસ</h3><p>ક્રૂઝ, નોર્થ ગોવા, સાઉથ ગોવા અને લોકલ સાઇટસીઇંગ.</p><a class="btn small" href="#register">બુકિંગ પૂછપરછ</a></article>
+<article class="tour"><h3>🇳🇵 નેપાળ પ્રવાસ</h3><p>કાઠમંડુ, પોખરા, લુંબીની, પશુપતિનાથ અને પસંદગીના સ્થળો.</p><a class="btn small" href="#register">બુકિંગ પૂછપરછ</a></article>
+<article class="tour"><h3>🛕 અયોધ્યા–પ્રયાગરાજ–વારાણસી</h3><p>રામ મંદિર, પ્રયાગરાજ અને વારાણસીના મુખ્ય ધાર્મિક તથા ઐતિહાસિક સ્થળો.</p><a class="btn small" href="#register">બુકિંગ પૂછપરછ</a></article>
+</div>
+</section>
+
+<section id="register">
+<h2>ઓનલાઇન રજીસ્ટ્રેશન / પૂછપરછ</h2>
+<form onsubmit="sendWhatsApp(event)">
+<input id="name" required placeholder="નામ">
+<input id="school" placeholder="શાળા / સંસ્થા">
+<input id="phone" required type="tel" placeholder="મોબાઇલ નંબર">
+<select id="tour"><option>દિલ્હી પ્રવાસ</option><option>ગોવા પ્રવાસ</option><option>નેપાળ પ્રવાસ</option><option>અયોધ્યા–પ્રયાગરાજ–વારાણસી</option></select>
+<textarea id="message" placeholder="વિશેષ માહિતી"></textarea>
+<button class="btn" type="submit">WhatsApp પર મોકલો</button>
+</form>
+</section>
+
+<section id="contact" class="contact">
+<h2>સંપર્ક કરો</h2>
+<p>તમારો WhatsApp નંબર અહીં બદલો.</p>
+<a class="btn" href="https://wa.me/918980983123" target="_blank">💬 WhatsApp</a>
+<a class="btn outline" href="tel:+918980983123">📞 Call Now</a>
+</section>
+</main>
+
+<footer>© 2026 KALP TOURS & TRAVELS</footer>
+<script src="app.js"></script>
+</body>
+</html>
