@@ -1,6 +1,6 @@
 const KEY = "kalp_packages_v2";
 
-const API_URL = "https://script.google.com/macros/s/AKfycbzy1XmwcnM15eh7xCUhj-fKaKus_cd7inv9UAagIeTqgp9mL11zvNApsXF6qIHcNq6q/exec";
+const API_URL = https://script.google.com/macros/s/AKfycbw1qgABDZdNA2wygJF5kxnzRQMCFuraNv8kkcmJig64mvxSnMkJjKLAU2a8fa8aV7RznQ/exec
 
 const defaults = [
   {
