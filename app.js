@@ -29,58 +29,69 @@ const defaults = [
   }
 ];
 
-let packagesCache = [];
+function normalizePackage(p, index) {
+  return {
+    id: Number(p.id ?? p.ID ?? index + 1),
+    name: String(p.name ?? p["Package Name"] ?? p["પેકેજ નામ"] ?? ""),
+    days: String(p.days ?? p.Days ?? ""),
+    price: String(p.price ?? p.Price ?? ""),
+    places: String(p.places ?? p.Places ?? ""),
+    details: String(p.details ?? p.Details ?? "")
+  };
+}
 
-async function getPackages() {
+function getPackages() {
   try {
-    const response = await fetch(API_URL);
-
-    if (!response.ok) {
-      throw new Error("API Error");
-    }
-
-    const data = await response.json();
-
-    if (Array.isArray(data)) {
-      packagesCache = data;
-      return data;
-    }
-
-    return defaults;
-  } catch (error) {
-    console.error("Google Sheet API Error:", error);
-
     const saved = localStorage.getItem(KEY);
 
-    if (saved) {
-      try {
-        const data = JSON.parse(saved);
-        if (Array.isArray(data)) {
-          packagesCache = data;
-          return data;
-        }
-      } catch (e) {}
+    if (!saved) return defaults;
+
+    const data = JSON.parse(saved);
+
+    if (!Array.isArray(data) || data.length === 0) {
+      return defaults;
     }
 
-    packagesCache = defaults;
+    return data.map(normalizePackage);
+  } catch (e) {
     return defaults;
   }
 }
 
-function saveLocal(data) {
-  packagesCache = data;
+function saveAll(data) {
   localStorage.setItem(KEY, JSON.stringify(data));
 }
 
-async function render() {
+async function loadFromGoogleSheet() {
+  try {
+    const response = await fetch(API_URL);
+    const data = await response.json();
+
+    if (Array.isArray(data) && data.length > 0) {
+      const packages = data
+        .filter(p => {
+          const status = String(p.Status ?? p.status ?? "Active").toLowerCase();
+          return status !== "inactive";
+        })
+        .map(normalizePackage)
+        .filter(p => p.name);
+
+      if (packages.length > 0) {
+        saveAll(packages);
+        render();
+      }
+    }
+  } catch (error) {
+    console.log("Google Sheet load error:", error);
+  }
+}
+
+function render() {
   const list = document.getElementById("packageList");
 
   if (!list) return;
 
-  list.innerHTML =
-    '<div class="empty">પેકેજ લોડ થઈ રહ્યા છે...</div>';
-
-  const data = await getPackages();
+  const data = getPackages();
 
   list.innerHTML = "";
 
@@ -109,10 +120,12 @@ async function render() {
 
       <p>
         <b>📍 સ્થળો:</b><br>
-        ${esc(p.places || "")}
+        ${esc(p.places || "માહિતી ઉપલબ્ધ નથી")}
       </p>
 
-      <p>${esc(p.details || "")}</p>
+      <p>
+        ${esc(p.details || "")}
+      </p>
 
       <div class="actions">
 
@@ -156,21 +169,21 @@ function esc(s) {
 
 function openForm(id = null) {
   const modal = document.getElementById("modal");
+  const form = document.getElementById("packageForm");
 
-  if (!modal) return;
+  if (!modal || !form) return;
 
   modal.classList.remove("hidden");
 
-  document.getElementById("packageForm").reset();
+  form.reset();
+
   document.getElementById("editId").value = "";
 
   document.getElementById("formTitle").textContent =
     "નવું પેકેજ";
 
   if (id !== null) {
-    const p = packagesCache.find(
-      x => Number(x.id) === Number(id)
-    );
+    const p = getPackages().find(x => x.id === id);
 
     if (!p) return;
 
@@ -178,11 +191,11 @@ function openForm(id = null) {
       "પેકેજમાં ફેરફાર";
 
     document.getElementById("editId").value = p.id;
-    document.getElementById("name").value = p.name || "";
-    document.getElementById("days").value = p.days || "";
-    document.getElementById("price").value = p.price || "";
-    document.getElementById("places").value = p.places || "";
-    document.getElementById("details").value = p.details || "";
+    document.getElementById("name").value = p.name;
+    document.getElementById("days").value = p.days;
+    document.getElementById("price").value = p.price;
+    document.getElementById("places").value = p.places;
+    document.getElementById("details").value = p.details;
   }
 }
 
@@ -197,39 +210,38 @@ function closeForm() {
 function savePackage(e) {
   e.preventDefault();
 
-  let data = [...packagesCache];
+  let data = getPackages();
 
-  const id =
-    document.getElementById("editId").value;
+  const id = document.getElementById("editId").value;
 
   const p = {
     id: id ? Number(id) : Date.now(),
 
-    name:
-      document.getElementById("name").value.trim(),
+    name: document.getElementById("name").value.trim(),
 
-    days:
-      document.getElementById("days").value.trim(),
+    days: document.getElementById("days").value.trim(),
 
-    price:
-      document.getElementById("price").value.trim(),
+    price: document.getElementById("price").value.trim(),
 
-    places:
-      document.getElementById("places").value.trim(),
+    places: document.getElementById("places").value.trim(),
 
-    details:
-      document.getElementById("details").value.trim()
+    details: document.getElementById("details").value.trim()
   };
+
+  if (!p.name) {
+    alert("પેકેજનું નામ લખો.");
+    return;
+  }
 
   if (id) {
     data = data.map(x =>
-      Number(x.id) === Number(id) ? p : x
+      x.id === Number(id) ? p : x
     );
   } else {
     data.unshift(p);
   }
 
-  saveLocal(data);
+  saveAll(data);
 
   closeForm();
 
@@ -250,19 +262,16 @@ function editPackage(id) {
 }
 
 function deletePackage(id) {
-  if (
-    confirm(
-      "આ પેકેજ કાઢી નાખવું છે?"
-    )
-  ) {
-    const data = packagesCache.filter(
-      x => Number(x.id) !== Number(id)
-    );
-
-    saveLocal(data);
-
-    render();
+  if (!confirm("આ પેકેજ કાઢી નાખવું છે?")) {
+    return;
   }
+
+  const data =
+    getPackages().filter(x => x.id !== id);
+
+  saveAll(data);
+
+  render();
 }
 
 function resetPackages() {
@@ -271,15 +280,18 @@ function resetPackages() {
       "મૂળ પેકેજ પાછા લાવવા? તમારા ઉમેરેલા ફેરફારો દૂર થશે."
     )
   ) {
-    saveLocal(defaults);
+    saveAll(defaults);
 
     render();
   }
 }
 
 function whatsapp(name) {
+  const packageName =
+    decodeURIComponent(name);
+
   const text =
-    decodeURIComponent(name) +
+    packageName +
     " વિશે માહિતી જોઈએ છે.";
 
   window.open(
@@ -289,10 +301,19 @@ function whatsapp(name) {
   );
 }
 
+/* શરૂઆતમાં default packages બતાવો */
 render();
 
+/* પછી Google Sheet માંથી સાચા packages લાવો */
+loadFromGoogleSheet();
+
+/* PWA Service Worker */
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./sw.js");
+    navigator.serviceWorker
+      .register("./sw.js")
+      .catch(error =>
+        console.log("Service Worker Error:", error)
+      );
   });
 }
